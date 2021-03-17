@@ -115,14 +115,18 @@ class FlutterWebViewClient {
   }
 
   private void onPageStarted(WebView view, String url) {
-    Log('from onPAgeStarted');
+    Log.w(
+        TAG,
+        "From web onPageStarted");
     Map<String, Object> args = new HashMap<>();
     args.put("url", url);
     methodChannel.invokeMethod("onPageStarted", args);
   }
 
   private void onPageFinished(WebView view, String url) {
-    Log('from onPAgeFinished');
+    Log.w(
+        TAG,
+        "From web onPageStarted");
     Map<String, Object> args = new HashMap<>();
     args.put("url", url);
     methodChannel.invokeMethod("onPageFinished", args);
