@@ -442,17 +442,6 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
   }
 
   @Override
-  public void onRecievedError(FlutterWebView view, int errorCode, String description, String failingUrl){
-    try{
-      Log.e("error page");
-    }
-    catch (e){
-      Log.e("error", e.toString());
-    }
-
-  }
-
-  @Override
   public void dispose() {
     methodChannel.setMethodCallHandler(null);
     if (webView instanceof InputAwareWebView) {
