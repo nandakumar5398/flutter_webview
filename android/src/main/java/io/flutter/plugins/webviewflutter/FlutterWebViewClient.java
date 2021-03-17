@@ -124,9 +124,6 @@ class FlutterWebViewClient {
   }
 
   private void onPageFinished(WebView view, String url) {
-    Log.w(
-        TAG,
-        "From web onPageStarted");
     Map<String, Object> args = new HashMap<>();
     args.put("url", url);
     methodChannel.invokeMethod("onPageFinished", args);
@@ -142,6 +139,9 @@ class FlutterWebViewClient {
 
   private void onWebResourceError(
       final int errorCode, final String description, final String failingUrl) {
+    Log.w(
+            TAG,
+            "onWebResourceError");
     final Map<String, Object> args = new HashMap<>();
     args.put("errorCode", errorCode);
     args.put("description", description);
@@ -198,13 +198,27 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, WebResourceRequest request, WebResourceError error) {
-        FlutterWebViewClient.this.onWebResourceError(
-            error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
+        Log.w(
+                "Build.VERSION_CODES.M",
+                "onRecievedErro");
+        if (request.isForMainFrame() && error != null) {
+          Log.w(
+                  "isForMainFrame",
+                  "Web Page not available");
+          view.loadUrl("file:///android_asset/www/error.html?errorCode=" + errorCode + "&errorDescription=" + description);
+        }
+//        Log.w("request", request);
+//        Log.w("error", error);
+//        FlutterWebViewClient.this.onWebResourceError(
+//            error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
       }
 
       @Override
       public void onReceivedError(
           WebView view, int errorCode, String description, String failingUrl) {
+        Log.w(
+                "NOn m",
+                "onRecievedErro");
         FlutterWebViewClient.this.onWebResourceError(errorCode, description, failingUrl);
       }
 
@@ -246,6 +260,9 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, WebResourceRequest request, WebResourceErrorCompat error) {
+        Log.w(
+                "RequiresFeature",
+                "onRecievedErro");
         FlutterWebViewClient.this.onWebResourceError(
             error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
       }
@@ -253,6 +270,9 @@ class FlutterWebViewClient {
       @Override
       public void onReceivedError(
           WebView view, int errorCode, String description, String failingUrl) {
+        Log.w(
+                "below RequiresFeature",
+                "onRecievedErro");
         FlutterWebViewClient.this.onWebResourceError(errorCode, description, failingUrl);
       }
 
