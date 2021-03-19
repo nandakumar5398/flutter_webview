@@ -31,6 +31,12 @@ class FlutterWebViewClient {
   private final MethodChannel methodChannel;
   private boolean hasNavigationDelegate;
   boolean hasProgressTracking;
+//  String htmlData=
+//          "n" +                "n" +
+//                  "n" +
+//                  "HelloWorldn" +
+//                  "n" +                "n";
+  String htmlData = "<html><body><p style='text-align:centre'>Server Busy</p></body></html>";
 
   FlutterWebViewClient(MethodChannel methodChannel) {
     this.methodChannel = methodChannel;
@@ -202,13 +208,16 @@ class FlutterWebViewClient {
                 "Build.VERSION_CODES.M",
                 "onRecievedErro");
         if (request.isForMainFrame() && error != null) {
-          Log.w(
-                  "isForMainFrame",
-                  "Web Page not available");
-          view.loadUrl("file:///android_asset/www/error.html?errorCode=" + errorCode + "&errorDescription=" + description);
+          view.loadData(htmlData, "text/html", "UTF-8");
+//          try{
+//            view.loadUrl("file:///android_asset/www/error.html?errorCode=\" + errorCode + \"&errorDescription=\" + description");
+//          }catch(Exception e){
+//            Log.w(
+//                    "Web Page not available exception",
+//                    e);
+//            view.loadData(htmlData, "text/html", "UTF-8");
+//          }
         }
-//        Log.w("request", request);
-//        Log.w("error", error);
 //        FlutterWebViewClient.this.onWebResourceError(
 //            error.getErrorCode(), error.getDescription().toString(), request.getUrl().toString());
       }
