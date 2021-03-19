@@ -31,12 +31,7 @@ class FlutterWebViewClient {
   private final MethodChannel methodChannel;
   private boolean hasNavigationDelegate;
   boolean hasProgressTracking;
-//  String htmlData=
-//          "n" +                "n" +
-//                  "n" +
-//                  "HelloWorldn" +
-//                  "n" +                "n";
-  String htmlData = "<html><body><p style='text-align:centre'>Server Busy</p></body></html>";
+  String htmlData = "<html><body><p style='text-align:centre;'>Issue occurred while connecting to the server</p></body></html>";
 
   FlutterWebViewClient(MethodChannel methodChannel) {
     this.methodChannel = methodChannel;
