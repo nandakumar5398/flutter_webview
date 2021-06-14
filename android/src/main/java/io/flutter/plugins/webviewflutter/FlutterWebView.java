@@ -26,6 +26,13 @@ import io.flutter.plugin.platform.PlatformView;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import android.util.Log;
+
+//Added this one
+import androidx.webkit.WebViewFeature;
+import androidx.webkit.WebSettingsCompat;
+import android.content.res.Configuration;
+
 
 public class FlutterWebView implements PlatformView, MethodCallHandler {
   private static final String JS_CHANNEL_NAMES_FIELD = "javascriptChannelNames";
@@ -112,6 +119,48 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
     // Multi windows is set with FlutterWebChromeClient by default to handle internal bug: b/159892679.
     webView.getSettings().setSupportMultipleWindows(true);
     webView.setWebChromeClient(new FlutterWebChromeClient());
+    Log.w("MyTag", "Setting dark mode");
+//    webView.getSettings().setForceDark(webView.getSettings().FORCE_DARK_ON);
+//    int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+//    float scale = getResources().getDisplayMetrics().density;
+//    webView.getSettings().setUserAgentString(webView.getSettings().getUserAgentString()+ ", AndroidDarkMode");
+//    Log.w("newAgent", webView.getSettings().getUserAgentString());
+
+    int nightModeFlags = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+
+    if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES){
+      if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+        Log.w("NativeWebview", "FORCE_DARK_STRATEGY supported");
+        WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+      }
+    }
+
+
+//    if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+//      Log.w("NativeWebview", "FORCE_DARK supported");
+//      WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+//    }
+
+//    if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK_STRATEGY)) {
+//      Log.w("newAgent", "In dark mode");
+//      if(nightModeFlags == Configuration.UI_MODE_NIGHT_YES){
+//        Log.w("newAgent", "In UI_MODE_NIGHT_YES");
+//        WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+////        WebSettingsCompat.setForceDarkStrategy(webView.getSettings(), WebSettingsCompat.DARK_STRATEGY_WEB_THEME_DARKENING_ONLY);
+//      }
+//    }
+
+
+//    Log.d("checkingMode", String.valueOf(nightModeFlags));
+//
+//    if(WebViewFeature.isFeatureSupported(WebViewFeature.FORCE_DARK)) {
+//      Log.w("newAgent", "darkmode");
+//      WebSettingsCompat.setForceDark(webView.getSettings(), WebSettingsCompat.FORCE_DARK_ON);
+//    }
+//    else{
+//      Log.w("newAgent", "lightmode");
+//    }
+
 
     methodChannel = new MethodChannel(messenger, "plugins.flutter.io/webview_" + id);
     methodChannel.setMethodCallHandler(this);
